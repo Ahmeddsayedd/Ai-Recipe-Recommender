@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Mood Recipe Recommender 🍽️</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-utensils"></i>
+                <h1>Mood-Based Recipe Recommender</h1>
+            </div>
+            <p class="tagline">Tell us how you feel, we'll suggest what to eat! 🍽️</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Input Section -->
+            <section class="input-section card">
+                <h2><i class="fas fa-feather-alt"></i> How Are You Feeling?</h2>
+                
+                <div class="input-group">
+                    <label for="mood_text">
+                        <i class="fas fa-comment-dots"></i> Describe your mood (or type below):
+                    </label>
+                    <textarea 
+                        id="mood_text" 
+                        placeholder="Example: I had a stressful day at work and need something comforting..."
+                        rows="3"></textarea>
+                    <div class="char-count">Characters: <span id="charCount">0</span></div>
+                </div>
+
+                <!-- Quick Mood Buttons -->
+                <div class="quick-moods">
+                    <h3><i class="fas fa-bolt"></i> Quick Select Mood:</h3>
+                    <div class="mood-buttons">
+                        <button class="mood-btn happy" onclick="setQuickMood('happy')">
+                            <i class="fas fa-smile"></i> Happy
+                        </button>
+                        <button class="mood-btn sad" onclick="setQuickMood('sad')">
+                            <i class="fas fa-sad-tear"></i> Sad
+                        </button>
+                        <button class="mood-btn stressed" onclick="setQuickMood('stressed')">
+                            <i class="fas fa-brain"></i> Stressed
+                        </button>
+                        <button class="mood-btn angry" onclick="setQuickMood('angry')">
+                            <i class="fas fa-angry"></i> Angry
+                        </button>
+                        <button class="mood-btn tired" onclick="setQuickMood('tired')">
+                            <i class="fas fa-bed"></i> Tired
+                        </button>
+                        <button class="mood-btn energetic" onclick="setQuickMood('energetic')">
+                            <i class="fas fa-bolt"></i> Energetic
+                        </button>
+                        <button class="mood-btn lonely" onclick="setQuickMood('lonely')">
+                            <i class="fas fa-user-friends"></i> Lonely
+                        </button>
+                        <button class="mood-btn relaxed" onclick="setQuickMood('relaxed')">
+                            <i class="fas fa-peace"></i> Relaxed
+                        </button>
+                        <button class="mood-btn anxious" onclick="setQuickMood('anxious')">
+                            <i class="fas fa-heartbeat"></i> Anxious
+                        </button>
+                        <button class="mood-btn comfort" onclick="setQuickMood('comfort-seeking')">
+                            <i class="fas fa-hands-helping"></i> Comfort
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Ingredients -->
+                <div class="input-group">
+                    <label for="ingredients">
+                        <i class="fas fa-carrot"></i> What ingredients do you have? (comma-separated)
+                    </label>
+                    <input 
+                        type="text" 
+                        id="ingredients" 
+                        placeholder="chicken, rice, garlic, tomato, spinach, olive oil">
+                    <div class="hint">Separate with commas. Leave empty for all recipes.</div>
+                </div>
+
+                <!-- Advanced Settings -->
+                <div class="advanced-settings">
+                    <button class="toggle-adv" onclick="toggleAdvanced()">
+                        <i class="fas fa-cog"></i> Advanced Settings
+                    </button>
+                    
+                    <div class="adv-content" id="advSettings">
+                        <div class="slider-group">
+                            <label for="alpha">
+                                <i class="fas fa-balance-scale"></i> Mood vs Ingredients Balance:
+                                <span id="alphaValue">70%</span>
+                            </label>
+                            <input 
+                                type="range" 
+                                id="alpha" 
+                                min="0" 
+                                max="100" 
+                                value="70"
+                                oninput="updateAlphaValue(this.value)">
+                            <div class="slider-labels">
+                                <span>More Ingredients</span>
+                                <span>Balanced</span>
+                                <span>More Mood</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="top_n">
+                                <i class="fas fa-list-ol"></i> Number of recommendations:
+                            </label>
+                            <select id="top_n">
+                                <option value="3">3 Recipes</option>
+                                <option value="5" selected>5 Recipes</option>
+                                <option value="8">8 Recipes</option>
+                                <option value="10">10 Recipes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn-primary" onclick="getRecommendations()">
+                        <i class="fas fa-magic"></i> Get Recommendations
+                    </button>
+                    <button class="btn-secondary" onclick="clearForm()">
+                        <i class="fas fa-redo"></i> Clear Form
+                    </button>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section">
+                <div id="loading" class="loading hidden">
+                    <div class="spinner"></div>
+                    <p>Analyzing your mood and finding perfect recipes...</p>
+                </div>
+
+                <div id="results" class="results-container hidden">
+                    <div class="results-header">
+                        <h2><i class="fas fa-concierge-bell"></i> Recommended Recipes</h2>
+                        <div class="stats" id="stats"></div>
+                    </div>
+                    
+                    <div id="recommendations"></div>
+                </div>
+
+                <div id="error" class="error hidden"></div>
+            </section>
+
+            <!-- How It Works -->
+            <section class="info-section card">
+                <h2><i class="fas fa-info-circle"></i> How It Works</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-icon">1</div>
+                        <h3>Describe Your Mood</h3>
+                        <p>Tell us how you feel. Our AI analyzes your text to understand your emotional state.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">2</div>
+                        <h3>List Your Ingredients</h3>
+                        <p>What's in your kitchen? We'll match recipes with what you already have.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">3</div>
+                        <h3>Get Personalized Recipes</h3>
+                        <p>Receive recipes that match both your mood and available ingredients.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-graduation-cap"></i> Grade 5 AI Project</h3>
+                    <p>This project demonstrates end-to-end machine learning application with:</p>
+                    <ul>
+                        <li>3+ ML Models (LR, Random Forest, Neural Network)</li>
+                        <li>Full-stack implementation (Frontend + API + ML)</li>
+                        <li>Comprehensive testing and evaluation</li>
+                        <li>Production-ready deployment</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3><i class="fas fa-server"></i> API Status</h3>
+                    <div id="apiStatus" class="api-status">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Checking...</span>
+                    </div>
+                    <button class="btn-small" onclick="checkApiStatus()">
+                        <i class="fas fa-sync"></i> Refresh Status
+                    </button>
+                </div>
+                
+                <div class="footer-section">
+                    <h3><i class="fas fa-code"></i> Technical Details</h3>
+                    <p>Built with FastAPI, Scikit-learn, TensorFlow</p>
+                    <p>TF-IDF feature extraction with 3000 features</p>
+                    <p>Cross-validated models with F1-score optimization</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2024 AI Mood Recipe Recommender | Grade 5 AI Project</p>
+                <p class="small">Dataset: realistic_recipe_mood_dataset.csv | Python 3.14</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedbackModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-star"></i> Rate This Recommendation</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="recipe-preview" id="modalRecipe"></div>
+                
+                <div class="rating">
+                    <h3>How well does this match your mood?</h3>
+                    <div class="stars">
+                        <i class="fas fa-star" onclick="rateRecipe(1)"></i>
+                        <i class="fas fa-star" onclick="rateRecipe(2)"></i>
+                        <i class="fas fa-star" onclick="rateRecipe(3)"></i>
+                        <i class="fas fa-star" onclick="rateRecipe(4)"></i>
+                        <i class="fas fa-star" onclick="rateRecipe(5)"></i>
+                    </div>
+                    <div class="rating-text" id="ratingText">Select a rating</div>
+                </div>
+                
+                <div class="feedback-input">
+                    <label for="feedbackText">Additional Feedback (optional):</label>
+                    <textarea id="feedbackText" placeholder="What did you like or dislike?"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn-primary" onclick="submitFeedback()">Submit Feedback</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
