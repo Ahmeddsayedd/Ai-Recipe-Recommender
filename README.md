@@ -54,7 +54,7 @@ python --version
 ```
 
 ## 📁 Project Structure
-powershell
+```powershell
 Copy code
 ai_recipe_recommender/
 ├── backend/
@@ -72,7 +72,7 @@ ai_recipe_recommender/
 │   └── script.js                 # API interaction
 ├── eda_output/                   # Auto-generated charts & reports
 └── README.md                     # This file
-
+```
 ## 🔧 Features
 
 ### Backend
