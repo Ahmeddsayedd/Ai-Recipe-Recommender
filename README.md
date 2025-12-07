@@ -55,7 +55,6 @@ python --version
 
 ## 📁 Project Structure
 ```powershell
-Copy code
 ai_recipe_recommender/
 ├── backend/
 │   ├── train_and_export.py       # Trains 4 ML models
