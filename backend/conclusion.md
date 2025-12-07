@@ -1,5 +1,7 @@
 # AI Mood Recipe Recommender - Technical Summary
 
+---
+
 ## 🎯 Project Overview
 This project implements a machine learning system that recommends recipes based on:
 
@@ -12,37 +14,39 @@ This project implements a machine learning system that recommends recipes based 
 ## 🤖 Model Workflow
 
 ### 1. Data Processing Pipeline
+**Pipeline:**  
 Raw Recipe Data → Text Cleaning → Feature Composition → TF-IDF Vectorization → Machine Learning
-Text Cleaning: Lowercase conversion, punctuation removal, whitespace normalization.
 
-Feature Composition: Combines recipe title, ingredients, and instructions into a single text.
+yaml
+Copy code
 
-TF-IDF Vectorization: Creates 2000-dimensional feature vectors with (1,2) word n-grams.
+- **Text Cleaning**: Lowercase conversion, punctuation removal, whitespace normalization  
+- **Feature Composition**: Combines recipe title, ingredients, and instructions into a single text  
+- **TF-IDF Vectorization**: Creates 2000-dimensional feature vectors with (1,2) word n-grams  
+- **Output**: Numerical features ready for machine learning models  
 
-Output: Numerical features ready for machine learning models.
+---
 
-2. Machine Learning Architecture
+### 2. Machine Learning Architecture
 Four algorithms were trained and compared:
 
-Logistic Regression: Fast linear classifier with L2 regularization.
+- **Logistic Regression**: Fast linear classifier with L2 regularization  
+- **Random Forest**: Ensemble of 100 decision trees for non-linear patterns  
+- **Naive Bayes**: Probabilistic model optimized for text classification  
+- **SVM Linear**: Maximum margin classifier for high-dimensional data  
 
-Random Forest: Ensemble of 100 decision trees for non-linear patterns.
+**Model Selection:** Best model chosen based on Macro F1-Score (Random Forest: 0.87 F1)
 
-Naive Bayes: Probabilistic model optimized for text classification.
+---
 
-SVM Linear: Maximum margin classifier for high-dimensional data.
-
-Model Selection: Best model chosen based on Macro F1-Score (Random Forest: 0.87 F1).
-
-3. Recommendation Algorithm
-shell
-Copy code
+### 3. Recommendation Algorithm
+```shell
 Final Score = α × Mood_Probability + (1-α) × Ingredient_Similarity
-α (0-1): User-controlled balance between mood match and ingredient availability.
+α (0-1): User-controlled balance between mood match and ingredient availability
+```
+Mood_Probability: Model's confidence (0-1) that a recipe matches the user's mood
 
-Mood_Probability: Model's confidence (0-1) that a recipe matches the user's mood.
-
-Ingredient_Similarity: Jaccard similarity between user's and recipe's ingredients.
+Ingredient_Similarity: Jaccard similarity between user's and recipe's ingredients
 
 📊 Model Performance & Evaluation
 Validation Results
@@ -149,13 +153,14 @@ Grocery store integration
 Social features: recipe sharing and community
 
 📈 Business Impact Potential
-User Engagement: +40% recipe views with personalized suggestions
+User Engagement
++40% recipe views with personalized suggestions
 
-Reduced Food Waste: Better ingredient matching
+Reduced food waste via better ingredient matching
 
-User Satisfaction: +25% with mood-based personalization
++25% user satisfaction with mood-based personalization
 
-Monetization
+Monetization Opportunities
 Premium features: Advanced filters, meal planning, nutrition tracking
 
 Partner integrations: Grocery delivery, cooking utensil recommendations
@@ -203,8 +208,8 @@ Document all processes, errors, and decisions
 Build end-to-end applications to demonstrate mastery
 
 🏆 Conclusion
-The AI Mood Recipe Recommender demonstrates a complete machine learning lifecycle, from data exploration to deployment. It successfully integrates multiple algorithms, evaluates model performance comprehensively, and provides a user-friendly interface.
+The AI Mood Recipe Recommender demonstrates a complete machine learning lifecycle, from data exploration to deployment. It integrates multiple algorithms, evaluates model performance comprehensively, and provides a user-friendly interface.
 
-The project proves that traditional ML techniques, when applied thoughtfully, can create intelligent systems capable of understanding human emotions and offering personalized recommendations. Its modular architecture, robust testing, and scalability make it ready for further development into a commercial product.
+Traditional ML techniques, when applied thoughtfully, can create intelligent systems capable of understanding human emotions and offering personalized recommendations. Its modular architecture, robust testing, and scalability make it ready for further development into a commercial product.
 
 This project reflects mastery of the end-to-end ML process: data analysis, model development, evaluation, deployment, and user interface design.
