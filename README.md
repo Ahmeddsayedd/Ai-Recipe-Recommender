@@ -86,8 +86,6 @@ Score = α × Mood_Match + (1 - α) × Ingredient_Match
 Mood_Match = model confidence
 Ingredient_Match = Jaccard similarity
 
-yaml
-Copy code
 
 **Performance:**
 - Accuracy: 88.3%
