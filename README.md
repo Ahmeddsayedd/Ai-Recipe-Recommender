@@ -109,7 +109,7 @@ Ingredient_Match = Jaccard similarity
 ---
 
 ## 🧪 Testing & Evaluation
-- 9/9 unit tests passed  
+- 6/9 unit tests passed  
 - Visual outputs: mood distribution, top ingredients, title word cloud, confusion matrix, model comparison  
 
 ---
