@@ -12,7 +12,6 @@ This project implements a machine learning system that recommends recipes based 
 ## 🤖 Model Workflow
 
 ### 1. Data Processing Pipeline
-```shell
 Raw Recipe Data → Text Cleaning → Feature Composition → TF-IDF Vectorization → Machine Learning
 Text Cleaning: Lowercase conversion, punctuation removal, whitespace normalization.
 
