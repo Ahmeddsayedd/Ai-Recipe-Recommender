@@ -1,6 +1,3 @@
-"""
-Mood Chef Pro: A Grade 5 AI Recipe Recommender System.
-Merges Data Processing, EDA, Complex Benchmarking, Unit Testing, and FastAPI.
 
 Dependencies:
 pip install fastapi uvicorn pandas numpy scikit-learn joblib matplotlib seaborn wordcloud python-multipart
@@ -432,4 +429,5 @@ if __name__ == "__main__":
 
     if args.server:
         print("\n=== STARTING SERVER ===")
+
         uvicorn.run(app, host="0.0.0.0", port=8000)
